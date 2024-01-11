@@ -13,9 +13,10 @@ export default function World(){
       let width = divRef.current.clientWidth;
       let height = divRef.current.clientHeight;
       const camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 10);
-      camera.position.z = 2;
+      camera.position.z = 4;
   
       const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xcccccc);
   
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(width, height);
@@ -25,7 +26,7 @@ export default function World(){
       divCurrent.appendChild(renderer.domElement);
       const control = new OrbitControls(camera , renderer.domElement);
       const gui = addSettings();
-      addObject();
+      const obj = addObject();
       window.addEventListener('resize', handleResize);
   
       // handle window resize
@@ -37,11 +38,14 @@ export default function World(){
         camera.updateProjectionMatrix();
         renderer.render(scene, camera);
       }
-  
+      let time = 0 ;
       // animation
-      function animation(time) {
+      function animation() {
+        time += 0.05;
+        obj.material.uniforms.uTime.value = time;
         control.update();
         renderer.render(scene, camera);
+
       }
       function addSettings(){
         const settings = {
@@ -54,32 +58,20 @@ export default function World(){
 
       function addObject(){
         const material = new THREE.ShaderMaterial( {
+          side:THREE.DoubleSide,
           vertexShader:vertexShader,
           fragmentShader:fragmentShader,
           uniforms:{
-            
-          }
+            uTime:{
+              value:0
+            }
+          },
+          extensions: { derivatives: true }
         })
         const geometry = new THREE.PlaneGeometry(2,2 );
         const mesh = new THREE.Mesh(geometry , material);
-        scene.add(mesh) 
-      }
-
-      function getRenderTarger(){
-        const renderTarget = new THREE.WebGLRenderTarget(width , height , {
-          minFilter:THREE.NearestFilter,
-          magFilter:THREE.NearestFilter,
-          format:THREE.RGBAFormat,
-          type:THREE.FloatType,
-        })
-        return renderTarget;
-      }
-      let fbo;
-      let fbo1;
-      function getFBO(){
-        fbo = getRenderTarger();
-        fbo1 = getRenderTarger();
-
+        scene.add(mesh)
+        return mesh; 
       }
   
       return () => {
