@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
-import vertexShader from './vertexShader.glsl';
-import fragmentShader from './fragmentShader.glsl';
-import vertexParticles from './vertexParticles.glsl';
-import fragmentParticles from './fragmentParticles.glsl';
+import vertexShader from './shader/vertexShader.glsl';
+import fragmentShader from './shader/fragmentShader.glsl';
+import vertexParticles from './shader/vertexParticles.glsl';
+import fragmentParticles from './shader/fragmentParticles.glsl';
 export default function Pepyaka(){
     const divRef = useRef<HTMLDivElement | any>();
 

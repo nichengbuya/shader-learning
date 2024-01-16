@@ -1,4 +1,4 @@
-const js = /*glsl*/`
+
 //	Simplex 3D Noise 
 //	by Ian McEwan, Ashima Arts
 //
@@ -94,5 +94,3 @@ void main() {
     gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0);
     vNormal = normal;
 }
-`
-export default js;

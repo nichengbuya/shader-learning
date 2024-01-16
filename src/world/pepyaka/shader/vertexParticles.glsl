@@ -1,4 +1,4 @@
-const js = /*glsl*/ `
+
     uniform float uTime;
     varying vec2 vUv;
     varying vec2 vUv1;
@@ -18,5 +18,3 @@ const js = /*glsl*/ `
         gl_PointSize = 10. * ( 1. / - mvPosition.z);
         gl_Position = projectionMatrix * mvPosition;
     }
-`;
-export default js;

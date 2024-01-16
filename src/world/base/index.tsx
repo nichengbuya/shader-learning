@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as THREE from 'three';
 import GUI from "three/examples/jsm/libs/lil-gui.module.min";
-import vertexShader from "./vertexShader.glsl";
-import fragmentShader from "./fragmentShader.glsl";
+import vertexShader from "./shader/vertexShader.glsl";
+import fragmentShader from "./shader/fragmentShader.glsl";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 export default function Base(){
   const divRef = useRef<HTMLDivElement | any>();
