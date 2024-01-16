@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useEffect, useRef } from "react";
 import * as THREE from 'three';
 import GUI from "three/examples/jsm/libs/lil-gui.module.min";
-import vertexShader from "../world/vertexShader";
-import fragmentShader from "../world/fragmentShader";
+import vertexShader from "./vertexShader";
+import fragmentShader from "./fragmentShader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-export default function ParticalesLoop(){
+export default function Base(){
   const divRef = useRef<HTMLDivElement | any>();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function ParticalesLoop(){
     let width = divRef.current.clientWidth;
     let height = divRef.current.clientHeight;
     const camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 10);
-    camera.position.z = 2;
+    camera.position.z = 3;
 
     const scene = new THREE.Scene();
 
@@ -25,7 +25,7 @@ export default function ParticalesLoop(){
     divCurrent.appendChild(renderer.domElement);
     const control = new OrbitControls(camera , renderer.domElement);
     const gui = addSettings();
-    addObject();
+    const obj = addObject();
     window.addEventListener('resize', handleResize);
 
     // handle window resize
@@ -38,8 +38,11 @@ export default function ParticalesLoop(){
       renderer.render(scene, camera);
     }
 
+    let time = 0 ;
     // animation
-    function animation(time:number) {
+    function animation() {
+      time += 0.05;
+      obj.material.uniforms.uTime.value = time;
       control.update();
       renderer.render(scene, camera);
     }
@@ -57,12 +60,15 @@ export default function ParticalesLoop(){
         vertexShader:vertexShader,
         fragmentShader:fragmentShader,
         uniforms:{
-          
+          uTime:{
+            value:0
+          },
         }
       })
       const geometry = new THREE.PlaneGeometry(2,2 );
       const mesh = new THREE.Mesh(geometry , material);
-      scene.add(mesh) 
+      scene.add(mesh);
+      return mesh;
     }
 
     function getRenderTarger(){

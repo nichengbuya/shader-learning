@@ -5,8 +5,9 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './error-page';
 import Root from './routes/root';
-import ParticalesLoop from './world/particles-loop';
-import World from './world/world';
+import Pepyaka from './world/pepyaka';
+import Base from './world/base';
+
 
 export const routerList = [
   {
@@ -15,12 +16,12 @@ export const routerList = [
     errorElement:<ErrorPage />,
     children:[
       {
-        path:"scene/particales-loop",
-        element:<ParticalesLoop></ParticalesLoop>
+        path:"scene/base",
+        element:<Base></Base>
       },
       {
-        path:"scene/world",
-        element:<World></World>
+        path:"scene/pepyaka",
+        element:<Pepyaka></Pepyaka>
       }
     ]
   },
