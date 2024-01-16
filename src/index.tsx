@@ -7,6 +7,7 @@ import ErrorPage from './error-page';
 import Root from './routes/root';
 import Pepyaka from './world/pepyaka';
 import Base from './world/base';
+import Test from './world/test';
 
 
 export const routerList = [
@@ -22,6 +23,10 @@ export const routerList = [
       {
         path:"scene/pepyaka",
         element:<Pepyaka></Pepyaka>
+      },
+      {
+        path:"scene/test",
+        element:<Test></Test>
       }
     ]
   },

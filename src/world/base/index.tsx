@@ -1,9 +1,8 @@
-import React, { useState } from "react";
 import { useEffect, useRef } from "react";
 import * as THREE from 'three';
 import GUI from "three/examples/jsm/libs/lil-gui.module.min";
-import vertexShader from "./vertexShader";
-import fragmentShader from "./fragmentShader";
+import vertexShader from "./vertexShader.glsl";
+import fragmentShader from "./fragmentShader.glsl";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 export default function Base(){
   const divRef = useRef<HTMLDivElement | any>();
@@ -71,22 +70,6 @@ export default function Base(){
       return mesh;
     }
 
-    function getRenderTarger(){
-      const renderTarget = new THREE.WebGLRenderTarget(width , height , {
-        minFilter:THREE.NearestFilter,
-        magFilter:THREE.NearestFilter,
-        format:THREE.RGBAFormat,
-        type:THREE.FloatType,
-      })
-      return renderTarget;
-    }
-    let fbo;
-    let fbo1;
-    function getFBO(){
-      fbo = getRenderTarger();
-      fbo1 = getRenderTarger();
-
-    }
 
     return () => {
       renderer.setAnimationLoop(null);

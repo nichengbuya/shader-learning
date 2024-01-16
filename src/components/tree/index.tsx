@@ -1,5 +1,3 @@
-import { loadavg } from "os";
-import React, { useEffect } from "react";
 import { Link, RouteObject, useLocation } from "react-router-dom";
 import {} from 'three';
 import { generateUUID } from "three/src/math/MathUtils";

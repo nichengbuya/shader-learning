@@ -1,4 +1,3 @@
-const js =/*glsl*/ `
 varying vec3 vNormal;
 uniform vec2 u_resolution;//包含屏幕的宽高值,xy
 uniform vec2 u_mouse;//鼠标的坐标值
@@ -40,5 +39,3 @@ void main( void ) {
     gl_FragColor= vec4(light * vColor, 1.0);
 
 }
-`
-export default js;

@@ -1,4 +1,4 @@
-const js = /*glsl*/`
+// const js = /*glsl*/`
 varying vec2 vUv;
 uniform float uTime;
 varying vec3 vNormal;
@@ -7,5 +7,5 @@ void main() {
     vUv = uv;
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0);
 }
-`
-export default js;
+// `
+// export default js;

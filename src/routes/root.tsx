@@ -1,13 +1,11 @@
 import {
     Outlet,
-    Link,
-    useLoaderData,
     Form
 } from "react-router-dom";
-import React from "react";
+
 import Tree from "../components/tree";
 import { routerList } from "..";
-import { connect } from "http2";
+
 
 export default function Root() {
     return (

@@ -52,8 +52,8 @@
     ]
   },
   "devDependencies": {
-    "@doublewin/glsl-stringify-loader": "^1.0.0",
     "@types/three": "^0.160.0",
-    "webpack-glsl-loader": "^1.0.1"
+    "glslify-loader": "^2.0.0",
+    "raw-loader": "^4.0.2"
   }
 }
