@@ -7,7 +7,9 @@ import ErrorPage from './error-page';
 import Root from './routes/root';
 import Pepyaka from './world/pepyaka';
 import Base from './world/base';
-import Test from './world/test';
+import Ablate from './world/ablate';
+import Mandalorian from './world/mandalorian';
+import Sun from './world/sun';
 
 
 export const routerList = [
@@ -25,8 +27,16 @@ export const routerList = [
         element:<Pepyaka></Pepyaka>
       },
       {
-        path:"scene/test",
-        element:<Test></Test>
+        path:"scene/ablate",
+        element:<Ablate></Ablate>
+      },
+      {
+        path:"scene/mandalorian",
+        element:<Mandalorian></Mandalorian>
+      },
+      {
+        path:"scene/sun",
+        element:<Sun></Sun>
       }
     ]
   },

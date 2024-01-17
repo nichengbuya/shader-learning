@@ -35,7 +35,7 @@ void main( void ) {
     vec3 groundColor = vec3( 0.562 , 0.275 , 0.111);
 
     light = mix(skyColor , groundColor , light );
-    gl_FragColor= vec4(vColor, 1.0);
-    gl_FragColor= vec4(light * vColor, 1.0);
+    // gl_FragColor= vec4(vColor, 1.0);
+    gl_FragColor= vec4( light * vColor , 1.0);
 
 }

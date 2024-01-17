@@ -240,7 +240,7 @@ i {
 
 #detail {
   flex: 1;
-  padding: 2rem 4rem;
+  padding: 2rem 2rem;
   width: 100%;
 }
 
@@ -379,4 +379,8 @@ i {
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+.lil-gui.autoPlace{
+  top:2rem;
+  right:2rem;
 }
