@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/shader-learning/static/css/main.a81f8e40.css",
+    "main.js": "/shader-learning/static/js/main.9558c857.js",
+    "static/js/651.d7ad7e6d.chunk.js": "/shader-learning/static/js/651.d7ad7e6d.chunk.js",
+    "index.html": "/shader-learning/index.html",
+    "main.a81f8e40.css.map": "/shader-learning/static/css/main.a81f8e40.css.map",
+    "main.9558c857.js.map": "/shader-learning/static/js/main.9558c857.js.map",
+    "651.d7ad7e6d.chunk.js.map": "/shader-learning/static/js/651.d7ad7e6d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a81f8e40.css",
+    "static/js/main.9558c857.js"
+  ]
+}
