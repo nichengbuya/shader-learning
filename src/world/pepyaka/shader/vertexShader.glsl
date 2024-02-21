@@ -1,4 +1,3 @@
-
 //	Simplex 3D Noise 
 //	by Ian McEwan, Ashima Arts
 //
