@@ -7,6 +7,19 @@ import fragmentShaderSun from "./shader-sun/fragmentShader.glsl";
 import vertexShaderArround from "./shader-arround/vertexShader.glsl";
 import fragmentShaderArround from "./shader-arround/fragmentShader.glsl";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass';
+import GUI from "three/examples/jsm/libs/lil-gui.module.min";
+
+const params = {
+  threshold: 0,
+  strength: 0.2,
+  radius: 0,
+  exposure: 1
+};
 export default function Sun() {
   const divRef = useRef<HTMLDivElement | any>(null);
   useEffect(() => {
@@ -25,10 +38,31 @@ export default function Sun() {
     const divCurrent = divRef.current;
     divCurrent.appendChild(renderer.domElement);
     const control = new OrbitControls(camera, renderer.domElement);
-    // const gui = addSettings();
+    const gui = addSettings();
     const obj = addObject();
-    addArround();
-    const {cubeRenderTarget1 , cubeCamera1 ,  materailPerlin , scene1} = addTexture();
+    // addArround();
+
+
+    const renderScene = new RenderPass(scene, camera);
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(width, height),
+      1.5,
+      0.3,
+      0.75
+    );
+    bloomPass.threshold = params.threshold;
+    bloomPass.strength = params.strength;
+    bloomPass.radius = params.radius;
+
+    const outputPass = new OutputPass();
+
+    const composer = new EffectComposer( renderer );
+    composer.addPass( renderScene );
+    composer.addPass( bloomPass );
+    composer.addPass( outputPass );
+
+
+    const { cubeRenderTarget1, cubeCamera1, materailPerlin, scene1 } = addTexture();
     window.addEventListener('resize', handleResize);
 
     // handle window resize
@@ -40,25 +74,56 @@ export default function Sun() {
       camera.updateProjectionMatrix();
       renderer.render(scene, camera);
     }
-    
-    function addTexture(){
+    function addSettings(){
+      const gui = new GUI();
+				const bloomFolder = gui.addFolder( 'bloom' );
+
+				bloomFolder.add( params, 'threshold', 0.0, 1.0 ).onChange( function ( value ) {
+
+					bloomPass.threshold = Number( value );
+
+				} );
+
+				bloomFolder.add( params, 'strength', 0.0, 3.0 ).onChange( function ( value ) {
+
+					bloomPass.strength = Number( value );
+
+				} );
+
+				gui.add( params, 'radius', 0.0, 1.0 ).step( 0.01 ).onChange( function ( value ) {
+
+					bloomPass.radius = Number( value );
+
+				} );
+
+				const toneMappingFolder = gui.addFolder( 'tone mapping' );
+
+				toneMappingFolder.add( params, 'exposure', 0.1, 2 ).onChange( function ( value ) {
+
+					renderer.toneMappingExposure = Math.pow( value, 4.0 );
+
+				} );
+
+      return gui;
+    }
+    function addTexture() {
       const scene1 = new THREE.Scene();
-      const cubeRenderTarget1 = new THREE.WebGLCubeRenderTarget(256 , {
-        format:THREE.RGBAFormat,
-        generateMipmaps:true,
-        minFilter:THREE.LinearMipMapLinearFilter ,
+      const cubeRenderTarget1 = new THREE.WebGLCubeRenderTarget(256, {
+        format: THREE.RGBAFormat,
+        generateMipmaps: true,
+        minFilter: THREE.LinearMipMapLinearFilter,
         encoding: THREE.sRGBEncoding
       });
-      const cubeCamera1 = new THREE.CubeCamera(0.1 , 10 , cubeRenderTarget1);
+      const cubeCamera1 = new THREE.CubeCamera(0.1, 10, cubeRenderTarget1);
 
-      const materailPerlin =  new THREE.ShaderMaterial( {
-        side:THREE.DoubleSide,
-        vertexShader:vertexShader,
-        fragmentShader:fragmentShader,
+      const materailPerlin = new THREE.ShaderMaterial({
+        side: THREE.DoubleSide,
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
         // wireframe:true,
-        uniforms:{
-          time:{
-            value:0
+        uniforms: {
+          time: {
+            value: 0
           },
 
         },
@@ -68,20 +133,20 @@ export default function Sun() {
       const geometry = new THREE.SphereGeometry(1, 30, 30);
       const mesh = new THREE.Mesh(geometry, materailPerlin);
       scene1.add(mesh);
-      return {cubeRenderTarget1 , cubeCamera1 ,  materailPerlin , scene1};
+      return { cubeRenderTarget1, cubeCamera1, materailPerlin, scene1 };
     }
-    function addObject(){
-      const material = new THREE.ShaderMaterial( {
-        side:THREE.DoubleSide,
-        vertexShader:vertexShaderSun,
-        fragmentShader:fragmentShaderSun,
+    function addObject() {
+      const material = new THREE.ShaderMaterial({
+        side: THREE.DoubleSide,
+        vertexShader: vertexShaderSun,
+        fragmentShader: fragmentShaderSun,
         // wireframe:true,
-        uniforms:{
-          time:{
-            value:0
+        uniforms: {
+          time: {
+            value: 0
           },
-          uPerlin:{
-            value:null
+          uPerlin: {
+            value: null
           }
         },
         extensions: { derivatives: true }
@@ -94,15 +159,15 @@ export default function Sun() {
       return mesh;
     }
 
-    function addArround(){
-      const material = new THREE.ShaderMaterial( {
-        side:THREE.BackSide,
-        vertexShader:vertexShaderArround,
-        fragmentShader:fragmentShaderArround,
+    function addArround() {
+      const material = new THREE.ShaderMaterial({
+        side: THREE.BackSide,
+        vertexShader: vertexShaderArround,
+        fragmentShader: fragmentShaderArround,
         // wireframe:true,
-        uniforms:{
-          time:{
-            value:0
+        uniforms: {
+          time: {
+            value: 0
           }
         },
         extensions: { derivatives: true }
@@ -119,18 +184,21 @@ export default function Sun() {
     // animation
     function animation() {
       time += 0.05;
-      cubeCamera1.update(renderer , scene1);
+      cubeCamera1.update(renderer, scene1);
       obj.material.uniforms.uPerlin.value = cubeRenderTarget1.texture;
       obj.material.uniforms.time.value = time;
       materailPerlin.uniforms.time.value = time;
       control.update();
-      renderer.render(scene, camera);
+  
+      // renderer.render(scene, camera);
+      composer.render();
     }
 
     return () => {
       renderer.setAnimationLoop(null);
       window.removeEventListener('resize', handleResize);
       divCurrent.removeChild(renderer.domElement);
+      gui.destroy();
       scene.traverse(child => {
         if (child instanceof THREE.Mesh) {
           child.geometry.dispose();
