@@ -6,7 +6,9 @@ import {
 import Tree from "../components/tree";
 import { routerList } from "..";
 
-
+export function rootLoader(){
+  
+}
 export default function Root() {
     return (
       <>

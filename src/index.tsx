@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './error-page';
 import Root from './routes/root';
 import Pepyaka from './world/pepyaka';
-import Base from './world/base';
 import Ablate from './world/ablate';
 import Mandalorian from './world/mandalorian';
 import Sun from './world/sun';
+import  Login  from './view/login';
+import  Register from './view/register';
+import Project from './view/project';
 
-
-export const routerList = [
+export const routerList:RouteObject[] = [
   {
     path: "/",
     element: <Root />,
@@ -20,7 +21,7 @@ export const routerList = [
     children:[
       {
         path:"scene/base",
-        element:<Base></Base>
+        Component:lazy(() => import("./world/base"))
       },
       {
         path:"scene/pepyaka",
@@ -37,9 +38,21 @@ export const routerList = [
       {
         path:"scene/sun",
         element:<Sun></Sun>
-      }
+      },
     ]
   },
+  {
+    path:'project/:id',
+    element:<Project></Project>
+  },
+  {
+    path:'/login',
+    element: <Login></Login>
+  },
+  {
+    path:'/register',
+    element:<Register></Register>
+  }
 
 ]
 const router = createBrowserRouter(routerList);
@@ -47,9 +60,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-     <RouterProvider router={router} />
-  </React.StrictMode>
+    <RouterProvider router={router} />
 );
 
 // If you want to start measuring performance in your app, pass a function
