@@ -9,8 +9,17 @@ export default function Base(){
 
   useEffect(() => {
     // init
-    const settings = {
-      progress: 0 
+    const textureLoader = new THREE.TextureLoader();
+    const uniforms = {
+      topY:{value: 0.5},
+      bottomY:{value:-0.5},
+      control: { value: 0.5 },
+      uTime:{
+        value:0
+      },
+      uTexture:{
+        value: textureLoader.load('/logo512.png')
+      }
     }
     let width = divRef.current.clientWidth;
     let height = divRef.current.clientHeight;
@@ -56,27 +65,16 @@ export default function Base(){
     function addSettings(){
 
       const gui = new GUI();
-      gui.add(settings , 'progress' , 0.0, 1.0 ).step(0.01).onChange((v)=>{});
-      // gui.add(params, "threshold", 0.0, 1.0).step(0.01);
+      gui.add(uniforms.control , 'value' , 0.0, 1.0 ).step(0.01).name('squash factor');
       return gui;
     }
 
     function addObject(){
-      const textureLoader = new THREE.TextureLoader();
+  
       const material = new THREE.ShaderMaterial( {
         vertexShader:vertexShader,
         fragmentShader:fragmentShader,
-        uniforms:{
-          uTopY:{
-            value: settings.progress,
-          },
-          uTime:{
-            value:0
-          },
-          uTexture:{
-            value: textureLoader.load('/logo512.png')
-          }
-        }
+        uniforms
       })
       const geometry = new THREE.SphereGeometry(0.5,32, 32 );
       const mesh = new THREE.Mesh(geometry , material);

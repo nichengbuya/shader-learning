@@ -9,9 +9,9 @@ import Pepyaka from './world/pepyaka';
 import Ablate from './world/ablate';
 import Mandalorian from './world/mandalorian';
 import Sun from './world/sun';
-import  Login  from './view/login';
-import  Register from './view/register';
-import Project from './view/project';
+// import  Login  from './view/login';
+// import  Register from './view/register';
+// import Project from './view/project';
 import Flatten from './world/flatten';
 
 export const routerList:RouteObject[] = [
