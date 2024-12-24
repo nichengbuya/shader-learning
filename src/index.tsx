@@ -12,43 +12,68 @@ import Sun from './world/sun';
 // import  Login  from './view/login';
 // import  Register from './view/register';
 // import Project from './view/project';
-import Flatten from './world/flatten';
+import Flatten from './world/vertex/flatten';
+import Suck from './world/vertex/suck';
+import BlackHole from './world/vertex/blackHole';
+import Fold from './world/vertex/fold';
 
-export const routerList:RouteObject[] = [
+export const routerList: RouteObject[] = [
   {
     path: "/",
     element: <Root />,
-    errorElement:<ErrorPage />,
-    children:[
+    errorElement: <ErrorPage />,
+    children: [
       {
-        path:"scene/base",
-        Component:lazy(() => import("./world/base"))
+        path: "scene",
+        children:[
+          {
+            path: "/scene/base",
+            Component: lazy(() => import("./world/base")),
+          },
+          {
+            path: "/scene/pepyaka",
+            element: <Pepyaka />,
+          },
+          {
+            path: "/scene/ablate",
+            element: <Ablate />,
+          },
+          {
+            path: "/scene/mandalorian",
+            element: <Mandalorian />,
+          },
+          {
+            path: "/scene/sun",
+            element: <Sun />,
+          },
+        ]
       },
+
       {
-        path:"scene/pepyaka",
-        element:<Pepyaka></Pepyaka>
+        path: "vertex",
+        children: [
+          {
+            path: "/vertex/flatten",
+            element: <Flatten />,
+          },
+          {
+            path: "/vertex/suck",
+            element: <Suck />,
+          },
+          {
+            path: "/vertex/black_hole",
+            element: <BlackHole />,
+          },
+          {
+            path: "/vertex/fold",
+            element: <Fold />,
+          },
+        ],
       },
-      {
-        path:"scene/ablate",
-        element:<Ablate></Ablate>
-      },
-      {
-        path:"scene/mandalorian",
-        element:<Mandalorian></Mandalorian>
-      },
-      {
-        path:"scene/sun",
-        element:<Sun></Sun>
-      },
-      {
-        path:"scene/flatten",
-        element:<Flatten></Flatten>
-      },
-    ]
+
+    ],
   },
-
-
-]
+];
 const router = createBrowserRouter(routerList);
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

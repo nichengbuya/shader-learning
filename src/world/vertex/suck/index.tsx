@@ -13,7 +13,7 @@ export default function Base(){
     const uniforms = {
       topY:{value: 0.5},
       bottomY:{value:-0.5},
-      control: { value: 0.5 },
+      control: { value: 0.0 },
       uTime:{
         value:0
       },
@@ -65,7 +65,7 @@ export default function Base(){
     function addSettings(){
 
       const gui = new GUI();
-      gui.add(uniforms.control , 'value' , 0.0, 1.0 ).step(0.01).name('squash factor');
+      gui.add(uniforms.control , 'value' , 0.0, 2.0 ).step(0.01).name('squash factor');
       return gui;
     }
 

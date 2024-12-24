@@ -37,7 +37,7 @@ export default function Root() {
             <button type="submit">New</button>
             </Form>
           </div>
-          <Tree list={routerList}></Tree>
+          <Tree list={routerList[0].children!}></Tree>
         </div>
         <div id="detail">
             <Outlet></Outlet>
