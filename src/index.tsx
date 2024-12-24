@@ -70,6 +70,15 @@ export const routerList: RouteObject[] = [
           },
         ],
       },
+      {
+        path:'depth',
+        children:[
+          {
+            path: "/depth/depth_texture",
+            Component: lazy(() => import("./world/depth/depthTexture")),
+          }
+        ]
+      }
 
     ],
   },

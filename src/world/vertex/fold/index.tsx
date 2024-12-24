@@ -81,7 +81,7 @@ export default function Base(){
         transparent:true,
         uniforms
       })
-      const geometry = new THREE.PlaneGeometry( 1, 1 ,32 , 32);
+      const geometry = new THREE.PlaneGeometry( 2, 2 ,32 , 32);
       geometry.rotateX(-Math.PI / 2);
       const mesh = new THREE.Mesh(geometry , material);
       scene.add(mesh);
