@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -16,6 +16,9 @@ import Flatten from './world/vertex/flatten';
 import Suck from './world/vertex/suck';
 import BlackHole from './world/vertex/blackHole';
 import Fold from './world/vertex/fold';
+import Base from './world/base';
+import DepthTexture from './world/depth/depthTexture';
+import Higthlight from './world/depth/highlight';
 
 export const routerList: RouteObject[] = [
   {
@@ -28,7 +31,7 @@ export const routerList: RouteObject[] = [
         children:[
           {
             path: "/scene/base",
-            Component: lazy(() => import("./world/base")),
+            element: <Base/>,
           },
           {
             path: "/scene/pepyaka",
@@ -75,7 +78,11 @@ export const routerList: RouteObject[] = [
         children:[
           {
             path: "/depth/depth_texture",
-            Component: lazy(() => import("./world/depth/depthTexture")),
+            element: <DepthTexture />,
+          },
+          {
+            path: "/depth/highlight",
+            element: < Higthlight />
           }
         ]
       }
