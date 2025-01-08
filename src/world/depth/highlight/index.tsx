@@ -19,6 +19,7 @@ export default function Base() {
 
     let width = divRef.current.clientWidth;
     let height = divRef.current.clientHeight;
+    let sphere: THREE.Object3D<THREE.Object3DEventMap>;
     init();
 
     function init() {
@@ -36,8 +37,11 @@ export default function Base() {
       stats.dom.style.left = '0'; // 距左边距0  
       divCurrent.appendChild(stats.dom);
 
-      camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 50);
+      camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 100);
+      camera.position.y = 4;
+      camera.position.x = 4;
       camera.position.z = 4;
+      // camera.lookAt(new THREE.Vector3(0, 0, 0));
 
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
@@ -69,41 +73,40 @@ export default function Base() {
       target.texture.format = THREE.RGBAFormat;
       target.texture.minFilter = THREE.NearestFilter;
       target.texture.magFilter = THREE.NearestFilter;
-      target.texture.generateMipmaps = false;
-      target.stencilBuffer = false;
-
+      target.depthBuffer = true;
       target.depthTexture = new THREE.DepthTexture(width, height);
-      target.depthTexture.format = THREE.DepthFormat;
       target.depthTexture.type = THREE.UnsignedShortType;
-
     }
 
 
     function setupScene() {
 
       scene = new THREE.Scene();
-
+      scene.background = new THREE.Color(0xcccccc);
       const cubeGeometry = new THREE.BoxGeometry();
-      const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-
+      const planeGeometry = new THREE.PlaneGeometry(2, 2);
+      planeGeometry.rotateX(- Math.PI / 2);
       // 普通材质
-
+      // uniform sampler2D tDiffuse;
+      // uniform sampler2D tDepth;
+      // uniform float cameraNear;
+      // uniform float cameraFar;
       // 将它们添加到场景中
       shaderMaterial = new THREE.ShaderMaterial({
         vertexShader,
         fragmentShader,
         uniforms: {
-          tDiffuse: { value: target.texture },
-          tDepth: { value: target.depthTexture },
-          cameraNear: { value: camera.near },
-          cameraFar: { value: camera.far },
-          highlightColor: { value: new THREE.Vector3(1, 1, 0) }, // 高亮色
-          intersectionWidth: { value: 0.01 } // 高亮宽度
+          _MainTex: { value: new THREE.TextureLoader().load('/texture/Pergament3.png')},
+          _CameraDepthTexture: { value: target.depthTexture },
+          _IntersectionColor: { value: new THREE.Color(1, 1, 0) }, // 黄色
+          _IntersectionWidth: { value: 0.01},
+          uNear: { value: camera.near},
+          uFar: { value: camera.far},
         }
       });
-
-      const cube = new THREE.Mesh(cubeGeometry, new THREE.MeshBasicMaterial({ color: 0x00ff00 }));
-      const sphere = new THREE.Mesh(sphereGeometry, shaderMaterial);
+      const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+      const cube = new THREE.Mesh(cubeGeometry, shaderMaterial);
+      sphere = new THREE.Mesh(planeGeometry, shaderMaterial);
       sphere.position.z = 0.5;
 
       // 使用自定义着色器材质代替基本材质
@@ -130,18 +133,17 @@ export default function Base() {
 
       // 将场景渲染到深度渲染目标
       renderer.setRenderTarget(target);
-      renderer.clear();
       renderer.render(scene, camera);
-    
-      if(shaderMaterial && target){
-        shaderMaterial.uniforms.tDepth.value = target.depthTexture;
+      if(sphere){
+        sphere.visible = false;
       }
-
-     
-      // 设置渲染目标为屏幕并渲染场景
+      shaderMaterial.uniforms._CameraDepthTexture.value = target.depthTexture;
+;
       renderer.setRenderTarget(null);
+      if(sphere){
+        sphere.visible = true;
+      }
       renderer.render(scene, camera);
-
       controls.update(); // required because damping is enabled
 
       stats.update();

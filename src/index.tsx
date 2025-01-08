@@ -19,6 +19,7 @@ import Fold from './world/vertex/fold';
 import Base from './world/base';
 import DepthTexture from './world/depth/depthTexture';
 import Higthlight from './world/depth/highlight';
+import Water from './world/depth/water';
 
 export const routerList: RouteObject[] = [
   {
@@ -83,7 +84,12 @@ export const routerList: RouteObject[] = [
           {
             path: "/depth/highlight",
             element: < Higthlight />
+          },
+          {
+            path: "/depth/water",
+            element: < Water />
           }
+
         ]
       }
 

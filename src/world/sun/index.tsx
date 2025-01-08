@@ -4,8 +4,8 @@ import vertexShader from "./shader/vertexShader.glsl";
 import fragmentShader from "./shader/fragmentShader.glsl";
 import vertexShaderSun from "./shader-sun/vertexShader.glsl";
 import fragmentShaderSun from "./shader-sun/fragmentShader.glsl";
-import vertexShaderArround from "./shader-arround/vertexShader.glsl";
-import fragmentShaderArround from "./shader-arround/fragmentShader.glsl";
+// import vertexShaderArround from "./shader-arround/vertexShader.glsl";
+// import fragmentShaderArround from "./shader-arround/fragmentShader.glsl";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
@@ -159,26 +159,26 @@ export default function Sun() {
       return mesh;
     }
 
-    function addArround() {
-      const material = new THREE.ShaderMaterial({
-        side: THREE.BackSide,
-        vertexShader: vertexShaderArround,
-        fragmentShader: fragmentShaderArround,
-        // wireframe:true,
-        uniforms: {
-          time: {
-            value: 0
-          }
-        },
-        extensions: { derivatives: true }
-      })
+    // function addArround() {
+    //   const material = new THREE.ShaderMaterial({
+    //     side: THREE.BackSide,
+    //     vertexShader: vertexShaderArround,
+    //     fragmentShader: fragmentShaderArround,
+    //     // wireframe:true,
+    //     uniforms: {
+    //       time: {
+    //         value: 0
+    //       }
+    //     },
+    //     extensions: { derivatives: true }
+    //   })
 
-      // 创建球体
-      const geometry = new THREE.SphereGeometry(1.2, 30, 30);
-      const mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
-      return mesh;
-    }
+    //   // 创建球体
+    //   const geometry = new THREE.SphereGeometry(1.2, 30, 30);
+    //   const mesh = new THREE.Mesh(geometry, material);
+    //   scene.add(mesh);
+    //   return mesh;
+    // }
 
     let time = 0;
     // animation

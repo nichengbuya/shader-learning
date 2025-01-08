@@ -1,31 +1,27 @@
 #include <packing>
-uniform sampler2D tDepth;
-uniform vec3 highlightColor;
-uniform float cameraNear;
-uniform float cameraFar;
-uniform float intersectionWidth;
+uniform sampler2D _MainTex;
+uniform sampler2D _CameraDepthTexture;
+uniform vec3 _IntersectionColor;
+uniform float _IntersectionWidth;
+uniform float uNear;
+uniform float uFar;
+varying vec2 vUv;
+varying vec4 vScreenPosition;
+varying float vEyeZ;
 
-varying vec4 vWorldPosition;
-
-float readDepth(sampler2D depthSampler, vec2 coord) {
-    float fragCoordZ = texture2D(depthSampler, coord).x;
-    return perspectiveDepthToViewZ(fragCoordZ, cameraNear, cameraFar);
+float linearizeDepth(float depth, float zNear, float zFar) {
+    return (2.0 * zNear) / (zFar + zNear - depth * (zFar - zNear));
 }
 
 void main() {
-    // Calculate the screen space position of the current fragment
-    vec3 screenPosition = (gl_FragCoord.xyz / gl_FragCoord.w);
+    vec4 col = texture2D(_MainTex, vUv);
 
-    // Retrieve the depth of the current fragment from depth texture
-    float currentFragmentDepth = readDepth(tDepth, gl_FragCoord.xy / vec2(textureSize(tDepth, 0)));
+    float zBufferValue = texture2DProj(_CameraDepthTexture, vScreenPosition).r;
+    float screenZ = linearizeDepth(zBufferValue, uNear, uFar); // Adjust zNear and zFar to your camera's setup
 
-    // Calculate the world space position of the fragment
-    float fragmentWorldZ = screenPosition.z * (cameraFar - cameraNear) + cameraNear;
+    float halfWidth = _IntersectionWidth / 2.0;
+    float diff = clamp(abs(vEyeZ - screenZ) / halfWidth, 0.0, 1.0);
 
-    // Determine if the fragment is at the intersection
-    if (abs(fragmentWorldZ - currentFragmentDepth) < intersectionWidth) {
-        gl_FragColor = vec4(highlightColor, 1.0); // Highlight intersection
-    } else {
-        discard; // Discard non-intersecting fragments if you don't want to render them
-    }
+    vec3 finalColor = mix(_IntersectionColor, col.rgb, diff);
+    gl_FragColor = vec4(finalColor, 1.0);
 }
