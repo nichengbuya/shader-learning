@@ -122,7 +122,7 @@ const EnergyShield: React.FC = () => {
 
     // shield
     const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('/noise.jpg');
+    const texture = textureLoader.load('/noise1.jpg');
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     const shieldGeometry = new THREE.SphereGeometry(0.5, 100, 100);
     const shieldMaterial = new THREE.RawShaderMaterial({
