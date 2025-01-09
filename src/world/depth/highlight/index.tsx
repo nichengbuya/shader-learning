@@ -15,6 +15,7 @@ export default function Base() {
     let target: THREE.WebGLRenderTarget<THREE.Texture>;
     let gui: GUI;
     let shaderMaterial: THREE.ShaderMaterial;
+    // let material: THREE.MeshBasicMaterial;
     const divCurrent = divRef.current;
 
     let width = divRef.current.clientWidth;
@@ -37,7 +38,7 @@ export default function Base() {
       stats.dom.style.left = '0'; // 距左边距0  
       divCurrent.appendChild(stats.dom);
 
-      camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 100);
+      camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 10);
       camera.position.y = 4;
       camera.position.x = 4;
       camera.position.z = 4;
@@ -97,14 +98,14 @@ export default function Base() {
         fragmentShader,
         uniforms: {
           _MainTex: { value: new THREE.TextureLoader().load('/texture/Pergament3.png')},
-          _CameraDepthTexture: { value: target.depthTexture },
+          tDepth: { value: target.depthTexture },
           _IntersectionColor: { value: new THREE.Color(1, 1, 0) }, // 黄色
           _IntersectionWidth: { value: 0.01},
           uNear: { value: camera.near},
           uFar: { value: camera.far},
         }
       });
-      const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+      // material = new THREE.MeshBasicMaterial({color: 0x00ff00});
       const cube = new THREE.Mesh(cubeGeometry, shaderMaterial);
       sphere = new THREE.Mesh(planeGeometry, shaderMaterial);
       sphere.position.z = 0.5;
@@ -127,22 +128,16 @@ export default function Base() {
 
     }
 
-    function animate() {
+    function animate() { 
 
       requestAnimationFrame(animate);
 
       // 将场景渲染到深度渲染目标
       renderer.setRenderTarget(target);
       renderer.render(scene, camera);
-      if(sphere){
-        sphere.visible = false;
-      }
-      shaderMaterial.uniforms._CameraDepthTexture.value = target.depthTexture;
+      shaderMaterial.uniforms.tDepth.value = target.depthTexture;
 ;
       renderer.setRenderTarget(null);
-      if(sphere){
-        sphere.visible = true;
-      }
       renderer.render(scene, camera);
       controls.update(); // required because damping is enabled
 
