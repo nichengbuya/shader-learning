@@ -20,7 +20,7 @@ import Base from './world/base';
 import DepthTexture from './world/depth/depthTexture';
 import Highlight from './world/depth/highlight';
 import EnergyField from './world/depth/energyField';
-import HighlightCopy from './world/depth/highlight copy';
+import HighlightCopy from './world/depth/highlight_v2';
 
 export const routerList: RouteObject[] = [
   {
