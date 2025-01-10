@@ -1,6 +1,6 @@
 #include <packing>
 uniform sampler2D mainTex;
-uniform sampler2D depthBuffer;
+uniform sampler2D tDepth;
 uniform vec2 resolution;
 uniform float uNear;
 uniform float uFar;
@@ -16,13 +16,11 @@ float zNDCToZ01(float zNDC) {
 void main() {
     vec4 color = texture2D(mainTex, vUv);
 
-  // 转换到相机空间中 near ~ far
     float z = vScreenPos.z / vScreenPos.w;
     float depth = zNDCToZ01(z);
 
-    // 调整相交宽度
     vec2 uv = gl_FragCoord.xy / resolution;
-    vec4 packedDepth = texture2D(depthBuffer, uv); // Ensure 2D texture lookup
+    vec4 packedDepth = texture2D(tDepth, uv); // Ensure 2D texture lookup
     float sceneDepth = unpackRGBAToDepth(packedDepth);
     // float diff = abs(depth - sceneDepth);
     float intersectionWidth = 0.01;
@@ -32,6 +30,6 @@ void main() {
 
 
     vec3 finalColor = mix(intersectionColor, color.rgb, diff);
-    gl_FragColor = vec4(vec3(sceneDepth), 1.0);
+    gl_FragColor = vec4(finalColor, 1.0);
 
 }
