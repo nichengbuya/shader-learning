@@ -11,5 +11,5 @@ float zNDCToZ01(float zNDC) {
 void main () {
   float z = vScreenPos.z / vScreenPos.w;
   float z01 = zNDCToZ01(z);
-  gl_FragColor = packDepthToRGBA(z01);
+  gl_FragColor = vec4(vec3(z01), 1.0);
 }

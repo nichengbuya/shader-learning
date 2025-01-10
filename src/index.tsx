@@ -18,8 +18,9 @@ import BlackHole from './world/vertex/blackHole';
 import Fold from './world/vertex/fold';
 import Base from './world/base';
 import DepthTexture from './world/depth/depthTexture';
-import Higthlight from './world/depth/highlight';
+import Highlight from './world/depth/highlight';
 import EnergyField from './world/depth/energyField';
+import HighlightCopy from './world/depth/highlight copy';
 
 export const routerList: RouteObject[] = [
   {
@@ -83,7 +84,11 @@ export const routerList: RouteObject[] = [
           },
           {
             path: "/depth/highlight",
-            element: < Higthlight />
+            element: < Highlight />
+          },
+          {
+            path: "/depth/highlight_copy",
+            element: < HighlightCopy />
           },
           {
             path: "/depth/energyField",

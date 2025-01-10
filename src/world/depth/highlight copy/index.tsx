@@ -5,6 +5,7 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import DepthVsShader from "./shader/depth_vs.glsl";
 import DepthFsShader from "./shader/depth_fs.glsl";
 import HighlightFsShader from "./shader/highlight_fs.glsl";
+import HighlightVsShader from "./shader/highlight_vs.glsl";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export default function Base() {
@@ -18,15 +19,14 @@ export default function Base() {
     const depthMaterial = new THREE.ShaderMaterial({
       vertexShader: DepthVsShader,
       fragmentShader: DepthFsShader,
-      side: THREE.DoubleSide,
-      uniforms: {
-        uNear: { value: 0.1 },
-        uFar: { value: 10 },
+      uniforms:{
+        uFar:{value: 10.0},
+        uNear:{value: 0.1}
       }
     })
     let width = divCurrent.clientWidth;
     let height = divCurrent.clientHeight;
-    let plane: THREE.Object3D;
+    let plane: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>;
 
     init();
 
@@ -40,7 +40,7 @@ export default function Base() {
       stats = new Stats();
       divCurrent.appendChild(stats.dom);
 
-      camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 10);
+      camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 100);
       camera.position.set(4, 4, 4);
 
       controls = new OrbitControls(camera, renderer.domElement);
@@ -49,18 +49,21 @@ export default function Base() {
       setupRenderTarget();
       setupScene();
       setupGUI();
-
+      onWindowResize();
       window.addEventListener('resize', onWindowResize);
     }
 
     function setupRenderTarget() {
-      const dpr = renderer.getPixelRatio();
-      target = new THREE.WebGLRenderTarget(width * dpr, height * dpr);
-      target.texture.format = THREE.RGBAFormat;
-      target.texture.minFilter = THREE.NearestFilter;
-      target.texture.magFilter = THREE.NearestFilter;
-      target.depthTexture = new THREE.DepthTexture(width * dpr, height * dpr);
-      target.depthTexture.type = THREE.UnsignedShortType;
+      target = new THREE.WebGLRenderTarget(1, 1, {
+        wrapS: THREE.ClampToEdgeWrapping,
+        wrapT: THREE.ClampToEdgeWrapping,
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        format: THREE.RGBAFormat,
+        type: THREE.UnsignedByteType,
+        stencilBuffer: false,
+        depthBuffer: true
+      });
     }
 
     function setupScene() {
@@ -72,22 +75,27 @@ export default function Base() {
       planeGeometry.rotateX(-Math.PI / 2);
 
       const planeMaterial = new THREE.ShaderMaterial({
-        vertexShader: DepthVsShader,
-        fragmentShader: HighlightFsShader,
         uniforms: {
+          depthBuffer: { value: null },
+          resolution: { value: new THREE.Vector2(1, 1) },
+          bufColor: { value: null },
+          u_tex: { value: null },
+          time: { value: 0 },
           mainTex: { value: new THREE.TextureLoader().load('/texture/Pergament3.png') },
-          tDepth: { value: target.texture },
-          intersectionColor: { value: new THREE.Color(1, 1, 0) }, 
-          intersectionWidth: { value: 0.01 },
-          uNear: { value: camera.near },
-          uFar: { value: camera.far },
-        }
+        },
+        vertexShader: HighlightVsShader,
+        fragmentShader: HighlightFsShader,
+        // transparent: true,
+        // depthWrite: false,
+        side: THREE.DoubleSide
       });
 
       const cube = new THREE.Mesh(cubeGeometry, new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('/texture/Pergament3.png') }));
-      plane = new THREE.Mesh(planeGeometry, depthMaterial);
+      plane = new THREE.Mesh(planeGeometry, planeMaterial);
       plane.position.z = 0.5;
-
+      plane.material.uniforms.depthBuffer.value = target.texture;
+      plane.material.uniforms.bufColor.value = target.texture;
+      // plane.material.uniforms.u_tex.value = texture;
       scene.add(cube);
       scene.add(plane);
     }
@@ -98,25 +106,27 @@ export default function Base() {
     }
 
     function onWindowResize() {
-      const newWidth = divCurrent.clientWidth;
-      const newHeight = divCurrent.clientHeight;
-
-      camera.aspect = newWidth / newHeight;
+      if (!divRef.current) return;
+      const { width, height } = divRef.current.getBoundingClientRect();
+      const dPR = window.devicePixelRatio;
+      camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      
-      renderer.setSize(newWidth, newHeight);
+      renderer.setSize(width, height);
+      target.setSize(width * dPR, height * dPR);
+      // hdr.setSize(width * dPR, height * dPR);
+      plane.material.uniforms.resolution.value.set(width * dPR, height * dPR);
     }
 
     function animate() {
       controls.update();
-      // plane.visible = false;
-      // scene.overrideMaterial = depthMaterial;
-      // renderer.setRenderTarget(target);
-      // renderer.render(scene, camera);
+      plane.visible = false;
+      scene.overrideMaterial = depthMaterial;
+      renderer.setRenderTarget(target);
+      renderer.render(scene, camera);
 
-      // plane.visible = true;
-      // scene.overrideMaterial = null;
-      // renderer.setRenderTarget(null);
+      plane.visible = true;
+      scene.overrideMaterial = null;
+      renderer.setRenderTarget(null);
       renderer.render(scene, camera);
 
       stats.update();
