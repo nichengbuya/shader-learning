@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.a81f8e40.css",
-    "main.js": "/static/js/main.491ccb7a.js",
-    "static/js/651.d7ad7e6d.chunk.js": "/static/js/651.d7ad7e6d.chunk.js",
-    "index.html": "/index.html",
-    "main.a81f8e40.css.map": "/static/css/main.a81f8e40.css.map",
-    "main.491ccb7a.js.map": "/static/js/main.491ccb7a.js.map",
-    "651.d7ad7e6d.chunk.js.map": "/static/js/651.d7ad7e6d.chunk.js.map"
+    "main.css": "/shader-learning/static/css/main.a81f8e40.css",
+    "main.js": "/shader-learning/static/js/main.b8fc6358.js",
+    "static/js/651.d7ad7e6d.chunk.js": "/shader-learning/static/js/651.d7ad7e6d.chunk.js",
+    "index.html": "/shader-learning/index.html",
+    "main.a81f8e40.css.map": "/shader-learning/static/css/main.a81f8e40.css.map",
+    "main.b8fc6358.js.map": "/shader-learning/static/js/main.b8fc6358.js.map",
+    "651.d7ad7e6d.chunk.js.map": "/shader-learning/static/js/651.d7ad7e6d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a81f8e40.css",
-    "static/js/main.491ccb7a.js"
+    "static/js/main.b8fc6358.js"
   ]
 }
