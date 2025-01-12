@@ -9,9 +9,6 @@ import Pepyaka from './world/pepyaka';
 import Ablate from './world/ablate';
 import Mandalorian from './world/mandalorian';
 import Sun from './world/sun';
-// import  Login  from './view/login';
-// import  Register from './view/register';
-// import Project from './view/project';
 import Flatten from './world/vertex/flatten';
 import Suck from './world/vertex/suck';
 import BlackHole from './world/vertex/blackHole';
@@ -20,6 +17,7 @@ import Base from './world/base';
 import DepthTexture from './world/depth/depthTexture';
 import Highlight from './world/depth/highlight';
 import EnergyField from './world/depth/energyField';
+import EnergyFieldCopy from './world/depth/energyField_v2';
 import HighlightCopy from './world/depth/highlight_v2';
 
 export const routerList: RouteObject[] = [
@@ -93,6 +91,10 @@ export const routerList: RouteObject[] = [
           {
             path: "/depth/energyField",
             element: < EnergyField />
+          },
+          {
+            path: "/depth/energyField_copy",
+            element: < EnergyFieldCopy />
           }
 
         ]
