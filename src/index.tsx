@@ -19,6 +19,7 @@ import Highlight from './world/depth/highlight';
 import EnergyField from './world/depth/energyField';
 import EnergyFieldCopy from './world/depth/energyField_v2';
 import HighlightCopy from './world/depth/highlight_v2';
+import Fog from './world/depth/fog';
 
 export const routerList: RouteObject[] = [
   {
@@ -95,8 +96,12 @@ export const routerList: RouteObject[] = [
           {
             path: "/depth/energyField_copy",
             element: < EnergyFieldCopy />
+          },
+          {
+            path: "/depth/fog",
+            element: < Fog />
           }
-
+          
         ]
       }
 
