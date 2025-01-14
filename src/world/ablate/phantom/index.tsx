@@ -99,12 +99,12 @@ export default function Ablate() {
         threshold: { value: params.threshold },
         mainTex: {
           value: textureLoader.load(
-            "https://oliverxh.github.io/demo/asset/Texture2D/Phantom_diffuse.png"
+            "/texture/Phantom_diffuse.png"
           ),
           onProgress
         },
         noiseTex: {
-          value: textureLoader.load("https://i.postimg.cc/y8mHLC8Z/noise-2.png"),
+          value: textureLoader.load("/texture/noise-2.png"),
           onProgress
         }
       };

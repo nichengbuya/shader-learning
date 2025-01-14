@@ -6,7 +6,8 @@ import { RouteObject, RouterProvider, createBrowserRouter } from 'react-router-d
 import ErrorPage from './error-page';
 import Root from './routes/root';
 import Pepyaka from './world/pepyaka';
-import Ablate from './world/ablate';
+import Ablate from './world/ablate/phantom';
+import AblateBase from './world/ablate/base';
 import Mandalorian from './world/mandalorian';
 import Sun from './world/sun';
 import Flatten from './world/vertex/flatten';
@@ -38,10 +39,7 @@ export const routerList: RouteObject[] = [
             path: "/scene/pepyaka",
             element: <Pepyaka />,
           },
-          {
-            path: "/scene/ablate",
-            element: <Ablate />,
-          },
+
           {
             path: "/scene/mandalorian",
             element: <Mandalorian />,
@@ -52,7 +50,19 @@ export const routerList: RouteObject[] = [
           },
         ]
       },
-
+      {
+        path: "/ablate",
+        children:[
+          {
+            path:'/ablate/phantom',
+            element: <Ablate />,
+          },
+          {
+            path:'/ablate/base',
+            element: <AblateBase />,
+          }
+        ]  
+      },
       {
         path: "vertex",
         children: [
