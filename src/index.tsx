@@ -23,6 +23,9 @@ import HighlightCopy from './world/depth/highlight_v2';
 import Fog from './world/depth/fog';
 import TwoColor from './world/ablate/two-color';
 import Gradient from './world/ablate/gradient';
+import FromPoint from './world/ablate/from-point';
+import Scene from './world/ablate/scene';
+import FromSide from './world/ablate/from-side';
 
 export const routerList: RouteObject[] = [
   {
@@ -70,6 +73,18 @@ export const routerList: RouteObject[] = [
           {
             path:'/ablate/gradient-color',
             element: <Gradient />,
+          },
+          {
+            path:'/ablate/from-point',
+            element: <FromPoint />,
+          },
+          {
+            path:'/ablate/from-side',
+            element: <FromSide />,
+          },
+          {
+            path:'/ablate/scene',
+            element: <Scene />,
           }
         ]  
       },
