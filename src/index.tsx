@@ -21,6 +21,8 @@ import EnergyField from './world/depth/energyField';
 import EnergyFieldCopy from './world/depth/energyField_v2';
 import HighlightCopy from './world/depth/highlight_v2';
 import Fog from './world/depth/fog';
+import TwoColor from './world/ablate/two-color';
+import Gradient from './world/ablate/gradient';
 
 export const routerList: RouteObject[] = [
   {
@@ -60,6 +62,14 @@ export const routerList: RouteObject[] = [
           {
             path:'/ablate/base',
             element: <AblateBase />,
+          },
+          {
+            path:'/ablate/two-color',
+            element: <TwoColor />,
+          },
+          {
+            path:'/ablate/gradient-color',
+            element: <Gradient />,
           }
         ]  
       },
