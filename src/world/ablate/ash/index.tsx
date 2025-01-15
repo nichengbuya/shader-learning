@@ -15,17 +15,18 @@ export default function Base(){
     const params = {
       progress: 0.0
     }
-    const meshes = [];
     const camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 100);
     camera.position.z = 5;
     camera.position.y = 5;
     camera.position.x = 5;
 
     const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xcccccc);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     renderer.setAnimationLoop(animation);
+
     const divCurrent = divRef.current;
     divCurrent.appendChild(renderer.domElement);
     const control = new OrbitControls(camera , renderer.domElement);
@@ -45,20 +46,26 @@ export default function Base(){
     const material = new THREE.ShaderMaterial( {
       vertexShader:vertexShader,
       fragmentShader:fragmentShader,
+      side:THREE.DoubleSide,
       uniforms:{
         uMainTex: { value: loader.load('/texture/Pergament5.png') },
         uNoiseTex: { value:loader.load('/texture/Noise.png')  },
         uRampTex: { value: loader.load('/texture/gradient.png') },
-        uThreshold: { value: params.progress},
-        uEdgeLength: { value: 0.1 },
-        uMaxDistance: { value: 2.0 },
-        uDistanceEffect: { value: 0.65 },
-        uStartPoint: { value: new THREE.Vector3(0, 0, 0) }
+        uWhiteNoiseTex:{value: loader.load('/texture/WhiteNoise.png') },
+        uFlyDirection: { value: new THREE.Vector4(1.0, 1.0, 1.0, 1.0) },
+        uAshColor: { value: new THREE.Vector4(0.0, 0.0, 0.0, 0.8) },
+        uThreshold: { value: 0.0 },
+        uEdgeWidth: { value: 0.1 },
+        uFlyIntensity: { value: 0.1 },
+        uMinBorderY: { value: -1.0 },
+        uMaxBorderY: { value: 1.0 },
+        uDistanceEffect: { value: 0.6 },
+        uAshWidth: { value: 0.1 },
+        uAshDensity: { value: 1.0 }
       }
     })
 
     initScene();
-    initialize();
     // handle window resize
     function handleResize() {
       if (!divRef.current) return;
@@ -87,75 +94,10 @@ export default function Base(){
     }
 
     function initScene(){
-      const light = new THREE.DirectionalLight(0xffffff, 1.5);
-      light.position.set(5, 10, 7.5);
-      scene.add(light);
-      const pointLight = new THREE.PointLight(0xffffff, 1, 50);
-      pointLight.position.set(0, 10, 0);
-      scene.add(pointLight);
-      const ambientLight = new THREE.AmbientLight(0x404040,1.5); // soft white light
-      scene.add(ambientLight);
-   // ground
-      const groundGeometry = new THREE.PlaneGeometry(3, 3);
-      // const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x808080, side: THREE.DoubleSide });
-      const ground = new THREE.Mesh(groundGeometry, material);
-      ground.castShadow = ground.receiveShadow = true;
-      ground.position.set(0, 0, 0);
-      ground.rotation.set(-Math.PI / 2, 0, 0);
-      scene.add(ground);
-
-      const pillarGeometry = new THREE.CylinderGeometry(0.2, 0.2, 2, 32);
-      // const pillarMaterial = new THREE.MeshPhongMaterial({ color: 0x704214 });
-      const numPillars = 3;
-      const spacing = 1; // Distance between each pillar
-    
-      const matrixSize = Math.sqrt(numPillars); // 确定每行和每列的个数，确保 numPillars 是一个完全平方数
-
-      for (let x = 0; x < matrixSize; x++) {
-        for (let y = 0; y < matrixSize; y++) {
-          const pillar = new THREE.Mesh(pillarGeometry, material);
-          pillar.position.set(
-            (x - (matrixSize - 1) / 2) * spacing, // Spread along x-axis
-            // 2.5,
-            1,
-            (y - (matrixSize - 1) / 2) * spacing  // Spread along z-axis
-          );
-          scene.add(pillar);
-        }
-      }
-    }
-
-    function calculateMaxDistance(verticesArray: number[]) {
-      let maxDistance = 0;
-      for (let i = 0; i < verticesArray.length; i += 3) {
-        const x = verticesArray[i];
-        const y = verticesArray[i + 1];
-        const z = verticesArray[i + 2];
-        const distance = Math.sqrt(x * x + y * y + z * z);
-        if (distance > maxDistance) {
-          maxDistance = distance;
-        }
-      }
-      return maxDistance;
-    }
-    function initialize() {
-
-      let maxDistance = 0;
-      let dissolveStartPoint = new THREE.Vector3();
-      // Traverse the scene to find all meshes
-      scene.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          meshes.push(object);
-  
-          // Calculate max distance for each mesh's geometry
-          const distance = calculateMaxDistance(object.geometry.attributes.position.array);
-          if (distance > maxDistance) maxDistance = distance;
-  
-          // Initialize and set shader material uniforms
-          object.material.uniforms.uStartPoint.value = dissolveStartPoint;
-          object.material.uniforms.uMaxDistance.value = maxDistance;
-        }
-      });
+      const geometry = new THREE.BoxGeometry(2, 2 , 2);
+      const mesh = new THREE.Mesh(geometry , material);
+      scene.add(mesh);
+      return mesh;
     }
 
 

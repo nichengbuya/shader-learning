@@ -26,6 +26,7 @@ import Gradient from './world/ablate/gradient';
 import FromPoint from './world/ablate/from-point';
 import Scene from './world/ablate/scene';
 import FromSide from './world/ablate/from-side';
+import Ash from './world/ablate/ash';
 
 export const routerList: RouteObject[] = [
   {
@@ -85,6 +86,10 @@ export const routerList: RouteObject[] = [
           {
             path:'/ablate/scene',
             element: <Scene />,
+          },
+          {
+            path:'/ablate/ash',
+            element: <Ash />,
           }
         ]  
       },
