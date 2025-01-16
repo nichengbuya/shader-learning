@@ -27,6 +27,7 @@ import FromPoint from './world/ablate/from-point';
 import Scene from './world/ablate/scene';
 import FromSide from './world/ablate/from-side';
 import Ash from './world/ablate/ash';
+import Camera from './world/ablate/camera';
 
 export const routerList: RouteObject[] = [
   {
@@ -90,6 +91,10 @@ export const routerList: RouteObject[] = [
           {
             path:'/ablate/ash',
             element: <Ash />,
+          },
+          {
+            path:'/ablate/camera',
+            element: <Camera />,
           }
         ]  
       },
