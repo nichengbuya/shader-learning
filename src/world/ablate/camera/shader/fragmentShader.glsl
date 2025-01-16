@@ -13,8 +13,14 @@ void main() {
     float toCamera = distance(vWorldPosition, uCameraPosition);
     float playerToCamera = distance(uPlayerPos, uCameraPosition);
     
+    // 获取屏幕宽高比
+    float aspectRatio = uResolution.x / uResolution.y;
+
     vec2 wcoord = vScreenPosition.xy / vScreenPosition.w;
-    wcoord = wcoord * 0.5 + 0.5; // 转换到 [0, 1]
+    wcoord = wcoord * 0.5 + 0.5; // 将坐标转换到 [0, 1]
+
+    // 考虑宽高比
+    wcoord.x *= aspectRatio;
 
     float mask = texture2D(uScreenSpaceMask, wcoord).r;
     vec4 col = texture2D(uMainTex, vUv);

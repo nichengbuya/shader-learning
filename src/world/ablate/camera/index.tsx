@@ -106,11 +106,10 @@ export default function Base(){
       ground.position.set(0, 0, 0);
       ground.rotation.set(-Math.PI / 2, 0, 0);
       scene.add(ground);
-      const geometry = new THREE.BoxGeometry(10, 10 , 0.2);
+      const geometry = new THREE.BoxGeometry(10, 5 , 10);
       const mesh = new THREE.Mesh(geometry , material);
       mesh.name = 'box';
-      mesh.position.z = 2;
-      mesh.position.y = 5;
+      mesh.position.y = 2.5;
       scene.add(mesh);
 
       return mesh;
