@@ -28,6 +28,7 @@ import Scene from './world/ablate/scene';
 import FromSide from './world/ablate/from-side';
 import Ash from './world/ablate/ash';
 import Camera from './world/ablate/camera';
+import WaterBase from './world/water/base';
 
 export const routerList: RouteObject[] = [
   {
@@ -147,7 +148,18 @@ export const routerList: RouteObject[] = [
             element: < Fog />
           }
           
-        ]
+        ],
+        
+      },
+      {
+        path:'water',
+        children:[
+          {
+            path: "/water/base",
+            element: < WaterBase />,
+          },     
+        ],
+        
       }
 
     ],
