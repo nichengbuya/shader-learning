@@ -29,7 +29,8 @@ import FromSide from './world/ablate/from-side';
 import Ash from './world/ablate/ash';
 import Camera from './world/ablate/camera';
 import WaterBase from './world/water/base';
-
+import BumpBase from './world/bump/base';
+import BumpNormal from './world/bump/nomal';
 export const routerList: RouteObject[] = [
   {
     path: "/",
@@ -158,6 +159,20 @@ export const routerList: RouteObject[] = [
             path: "/water/base",
             element: < WaterBase />,
           },     
+        ],
+        
+      },
+      {
+        path:'bump',
+        children:[
+          {
+            path: "/bump/base",
+            element: < BumpBase />,
+          },    
+          {
+            path: "/bump/normal",
+            element: < BumpNormal />,
+          },   
         ],
         
       }

@@ -45,6 +45,7 @@ function Tree({ list }: { list: RouteObject[] }) {
             <Link
               className={location.pathname === `/${route.path}` ? "active" : ""}
               to={route.path!}
+              replace
             >
               {getLastSegment(route.path!)}
             </Link>
